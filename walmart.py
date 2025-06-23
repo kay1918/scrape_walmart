@@ -9,6 +9,7 @@ import requests
 
 scrapfly_key = 'scp-live-9c54a3a13fd049639946db64eabde488' #get own key from scrapfly
 SCRAPFLY = ScrapflyClient(key=scrapfly_key)
+#SCRAPFLY = ScrapflyClient(key=os.environ["SCRAPFLY_KEY"])
 BASE_CONFIG = {"asp": True, "country": "US", "proxy_pool": "public_residential_pool", "render_js": True}
 '''
 SCRAPFLY = ScrapflyClient(key=os.environ["SCRAPFLY_KEY"])
@@ -51,9 +52,9 @@ def scrape_search_product(url: str) -> Dict:
 
 def download_image(image_info, save_as):
     try:
-      os.makedirs("output", exist_ok=True)
+      os.makedirs("images", exist_ok=True)
       response = requests.get(image_info)
-      with open(f"output/"+save_as, 'wb') as file:
+      with open(f"images/"+save_as, 'wb') as file:
           file.write(response.content)
           print(save_as + " image file saved")
     except Exception as e:

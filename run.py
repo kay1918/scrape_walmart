@@ -12,11 +12,26 @@ assert "SCRAPFLY_KEY" in os.environ, "Please set SCRAPFLY_KEY environment variab
 '''
 
 def run():
-    print("running Walmart scrape and saving results to ./results directory")
-    df= pd.read_excel("raw_data_copy.xlsx")
-    product_names = df['product_name']
-    products_data = walmart.scrape_search_products(product_names)
-    walmart.data_to_csv(products_data)
+    print("running Walmart scrape and saving results to ./ouput directory")
+    df= pd.read_excel("cropped_data.xlsx")# Load the Excel file
+    df = df.dropna(subset=["id", "product_name"])
+    # Convert to dictionary
+    product_dict = dict(zip(df['id'], df['product_name']))
+    price_info_list = []
+    for id, url in product_dict.items():
+        product_info = walmart.scrape_search_product(url)
+        try:
+            image_info = product_info['image_info']
+            price = product_info.get('price_info', None)
+            walmart.download_image(image_info, f'{id}.png')
+            price_info_list.append(price)
+        except:
+            print(f"product {id} not found")
+            price_info_list.append(0)
+
+    df['price_info'] = price_info_list
+    # Save to a new Excel file
+    df.to_excel("walmart_products_withprice.xlsx", index=False)
 
 if __name__ == "__main__":
     run()

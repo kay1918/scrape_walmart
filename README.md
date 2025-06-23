@@ -21,6 +21,6 @@ This Walmart.com scraper uses __Python 3.11__ with [scrapfly-sdk](https://pypi.o
 ```
 
 2. Run scrape:
-    ```shell
+```shell
     $ python run.py
-    ```
+```

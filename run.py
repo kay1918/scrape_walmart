@@ -10,7 +10,7 @@ assert "SCRAPFLY_KEY" in os.environ, "Please set SCRAPFLY_KEY environment variab
 def run():
     print("running Walmart scrape and saving results to ./ouput directory")
     ### Change the file name to the name of the file you want to scrape 
-    df= pd.read_excel("short_data.xlsx")# Load the Excel file 
+    df= pd.read_excel("raw_data.xlsx")# Load the Excel file 
     df = df.dropna(subset=["id", "product_name"])
     # Convert to dictionary
     product_dict = dict(zip(df['id'], df['product_name']))
@@ -30,7 +30,7 @@ def run():
     # Save to a new Excel file
     df.to_excel("walmart_products_withprice.xlsx", index=False)
     print("Price info saved to walmart_products_withprice.xlsx")
-    
+
 if __name__ == "__main__":
     run()
 
